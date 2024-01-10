@@ -1,9 +1,5 @@
-# Import the necessary libraries.
 import disnake
-import os
 from disnake.ext import commands
-
-BOT_TOKEN = os.environ["BOT_TOKEN"]
 
 bot = commands.Bot(reload=True)
 
@@ -41,16 +37,16 @@ async def help_listener(inter: disnake.MessageInteraction):
     elif inter.component.custom_id == "danger":
         await inter.response.send_message("do not press the danger button")
 
-@bot.slash_command(name='server info', description='get server info or something')
+@bot.slash_command(name='server_info', description='get server info or something')
 async def server_info(inter: disnake.ApplicationCommandInteraction):
     await inter.response.send_message(
         f"Server name: {inter.guild.name}\nTotal members: {inter.guild.member_count}"
     )
 
-@bot.slash_command(name='user info', description='get some info about your account')
+@bot.slash_command(name='user_info', description='get some info about your account')
 async def user_info(inter: disnake.ApplicationCommandInteraction):
     await inter.response.send_message(f"Your tag: {inter.author}\nYour ID: {inter.author.id}")
 
 bot.load_extension("cogs.ping")
 
-bot.run(BOT_TOKEN)
+bot.run(open("token.txt").read())
