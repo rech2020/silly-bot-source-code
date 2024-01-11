@@ -1,7 +1,13 @@
 import disnake
 from disnake.ext import commands
 
-bot = commands.Bot(reload=True)
+bot = commands.Bot(command_prefix='hey silly', reload=True)
+
+# people ids
+hexahedron1=801078409076670494
+tema5002=558979299177136164
+ammeter=811569586675515433
+rech2020=710621353128099901
 
 @bot.event
 async def on_ready():
@@ -103,6 +109,15 @@ async def user_info(inter: disnake.ApplicationCommandInteraction):
 async def msg_console(ctx, msg):
     print(f'um hello {ctx.author.name} left a message fo you: {msg}')
     await ctx.send('done',ephemeral=True)
+
+@bot.command()
+async def die(ctx):
+    if ctx.author.id==rech2020 or tema5002:
+        await ctx.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
+        exit()
+    else:
+        await ctx.send("nuh uh")
+
 bot.load_extension("cogs.ping")
 
 bot.run(open("token.txt").read())
