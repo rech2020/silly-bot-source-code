@@ -1,7 +1,7 @@
 import disnake
 from disnake.ext import commands
 
-bot = commands.Bot(command_prefix='hey silly', reload=True)
+bot = commands.Bot(command_prefix='hey silly ', reload=True)
 
 # people ids
 hexahedron1=801078409076670494
