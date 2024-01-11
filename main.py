@@ -40,7 +40,7 @@ async def buttons(inter: disnake.ApplicationCommandInteraction):
 
 
 @bot.listen("on_button_click")
-async def help_listener(inter: disnake.MessageInteraction):
+async def buttons_listener(inter: disnake.MessageInteraction):
     if inter.component.custom_id not in ["success", "danger"]:
         return
 
@@ -73,12 +73,12 @@ async def say(ctx, text:str, guild_id:str = None, channel_id: str = None):
     except:
       await ctx.send("invalid channel id",ephemeral=True)
       return
-  if ctx.author.id==710621353128099901 or ctx.author.id==ctx.guild.owner_id:
+  if ctx.author.id in [rech2020, tema5002] or ctx.author.id==ctx.guild.owner_id: # TODO: add a trusteds list so i don't need to put everyonr everywhere
       await ctx.send("ok", ephemeral=True)
       guild = bot.get_guild(guild_id)
       channel = guild.get_channel(channel_id)
       await channel.send(text)
-      print(f"{ctx.author.name} used /say to say in {guild.name} #{channel.name}\n{text}")
+      print(f"{ctx.author.name}({ctx.author.id}) used /say to say in {guild.name} #{channel.name}\n{text}")
   else:
       await ctx.send("nuh uh",ephemeral=True)
 
@@ -105,14 +105,14 @@ async def guild_info(inter, guild_id: int=938770488702951545):
 async def user_info(inter: disnake.ApplicationCommandInteraction):
     await inter.response.send_message(f"Your tag: {inter.author}\nYour ID: {inter.author.id}")
 
-@bot.slash_command()
+@bot.slash_command(name='msg_console', description="send a message to rech2020's console")
 async def msg_console(ctx, msg):
     print(f'um hello {ctx.author.name} left a message fo you: {msg}')
     await ctx.send('done',ephemeral=True)
 
 @bot.command()
 async def die(ctx):
-    if ctx.author.id==rech2020 or tema5002:
+    if ctx.author.id in [rech2020, tema5002]: # TODO: add a trusteds list so i don't need to put everyone everywhere part 2
         await ctx.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
         exit()
     else:
