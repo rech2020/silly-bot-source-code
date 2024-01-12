@@ -4,7 +4,7 @@ from disnake.ext import commands
 intents = disnake.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='hey silly ', reload=True, intents=disnake.Intents.default())
+bot = commands.Bot(command_prefix='hey silly ', reload=True, intents=intents)
 
 # people ids
 hexahedron1=801078409076670494
