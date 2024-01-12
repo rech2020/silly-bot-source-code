@@ -1,6 +1,6 @@
 import disnake
 from disnake.ext import commands
-
+import os
 intents = disnake.Intents.default()
 intents.message_content = True
 
@@ -118,6 +118,7 @@ async def die(ctx):
     if ctx.author.id in [rech2020, tema5002]: # TODO: add a trusteds list so i don't need to put everyone everywhere part 2
         await ctx.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
         print('i am dead')
+        os.system("python main.py")
         exit()
     else:
         await ctx.send("nuh uh")
