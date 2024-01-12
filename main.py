@@ -1,7 +1,7 @@
 import disnake
 from disnake.ext import commands
 
-bot = commands.Bot(command_prefix='hey silly ', reload=True)
+bot = commands.Bot(command_prefix='hey silly ', reload=True, intents=disnake.Intents.default())
 
 # people ids
 hexahedron1=801078409076670494
@@ -110,13 +110,15 @@ async def msg_console(ctx, msg):
     print(f'um hello {ctx.author.name} left a message fo you: {msg}')
     await ctx.send('done',ephemeral=True)
 
-@bot.command()
+@bot.command(name='die')
 async def die(ctx):
     if ctx.author.id in [rech2020, tema5002]: # TODO: add a trusteds list so i don't need to put everyone everywhere part 2
         await ctx.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
+        print('i am dead')
         exit()
     else:
         await ctx.send("nuh uh")
+        print(f'')
 
 bot.load_extension("cogs.ping")
 
