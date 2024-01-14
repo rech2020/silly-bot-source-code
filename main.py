@@ -1,6 +1,7 @@
 import disnake
 from disnake.ext import commands
 import os
+import time
 intents = disnake.Intents.default()
 intents.message_content = True
 
@@ -11,25 +12,52 @@ hexahedron1=801078409076670494
 tema5002=558979299177136164
 ammeter=811569586675515433
 rech2020=710621353128099901
-
+slinx92=903650492754845728
+# bad people ids (cant say who they really are)
+theguywhocantcook=691598832273850440
+#trusteds list
+trusteds = [hexahedron1,tema5002,slinx92,rech2020]
+#retards list
+retards = [theguywhocantcook]
+#servers
+oleg_server = 1195939785928364132
 @bot.event
 async def on_ready():
     print("Powerup inniciated.")
     print(f"Logged in as {bot.user} (ID: {bot.user.id})\n------")
-    
     print("setting presence")
     people=0
     for every in bot.guilds:
         people+=every.member_count
         print(f"{people} people... ({every.member_count} people from {every.name})")
     await bot.change_presence(status=disnake.Status.online,activity=disnake.Game(f"with {people} people on {len(bot.guilds)} servers"))
-    print("presence changed")
+    print("presence changed\n-----")
 
+@bot.event
+async def on_guild_remove(guild):
+    channel=bot.get_channel(1195947266855403590)
+    try: await channel.send(f"**{guild.owner.name}** пидорас тупой он меня по IP забанил с сервера **{guild.name}** :hugging::hugging::hugging::smiling_face_with_3_hearts::smiling_face_with_3_hearts::exploding_head::relaxed::relaxed::relaxed::kissing_heart::kissing_heart::kissing_heart::heart_eyes::heart_eyes::blush::blush::kissing_closed_eyes::kissing_closed_eyes:")
+    except: await channel.send("i got removed from some server which name i dont know or failed to fetch")
+
+@bot.event
+async def on_member_join(member):
+    print(f"{member.name} joined the {member.guild.name} server with id {member.guild.id}")
+    if member.guild.id == 1195939785928364132:
+        print(f'as you know by now that person joined the oleg server if i put the id right')
+        if member.id not in trusteds:
+           role = oleg_server.fetch_role(1195957915916447744)
+           print(f'attempting to add role {role.name} to {member.name}')
+           await member.add_roles(role)
+    
 @bot.user_command()
 async def avatar(inter, user):
     embed = disnake.Embed(title=str(user))
     embed.set_image(url=user.display_avatar.url)
     await inter.response.send_message(embed=embed)
+
+@bot.command(name='helpp')
+async def helpp(ctx):
+    await ctx.send('this is not implemented yet <:typing:1195957954193653990>')
 
 @bot.slash_command(name='buttons', description='testing buttons')
 async def buttons(inter: disnake.ApplicationCommandInteraction):
@@ -76,7 +104,7 @@ async def say(ctx, text:str, guild_id:str = None, channel_id: str = None):
     except:
       await ctx.send("invalid channel id",ephemeral=True)
       return
-  if ctx.author.id in [rech2020, tema5002] or ctx.author.id==ctx.guild.owner_id: # TODO: add a trusteds list so i don't need to put everyonr everywhere
+  if ctx.author.id in trusteds or ctx.author.id==ctx.guild.owner_id:
       await ctx.send("ok", ephemeral=True)
       guild = bot.get_guild(guild_id)
       channel = guild.get_channel(channel_id)
@@ -115,10 +143,10 @@ async def msg_console(ctx, msg):
 
 @bot.command(name='die')
 async def die(ctx):
-    if ctx.author.id in [rech2020, tema5002]: # TODO: add a trusteds list so i don't need to put everyone everywhere part 2
+    if ctx.author.id in trusteds:
         await ctx.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
         print('i am dead')
-        os.system("python main.py")
+        time.sleep(1)
         exit()
     else:
         await ctx.send("nuh uh")
