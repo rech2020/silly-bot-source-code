@@ -15,10 +15,11 @@ rech2020=710621353128099901
 slinx92=903650492754845728
 # bad people ids (cant say who they really are)
 theguywhocantcook=691598832273850440
+ihatethisguy=795404576839958529
 #trusteds list
 trusteds = [hexahedron1,tema5002,slinx92,rech2020]
 #retards list
-retards = [theguywhocantcook]
+retards = [theguywhocantcook,ihatethisguy]
 #servers
 oleg_server = 1195939785928364132
 @bot.event
