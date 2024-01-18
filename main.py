@@ -15,15 +15,17 @@ tema5002 = 558979299177136164
 ammeter = 811569586675515433
 rech2020 = 710621353128099901
 slinx92 = 903650492754845728
+kesslon = 1143072932596305932
+d = 1143072932596305932
 # bad people ids (cant say who they really are)
 theguywhocantcook = 691598832273850440
 ihatethisguy = 795404576839958529
 # trusteds list
-trusteds = [hexahedron1, tema5002, slinx92, rech2020]
+trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
 # retards list
 retards = [theguywhocantcook, ihatethisguy]
 # servers
-oleg_server = 1195939785928364132
+barhtolomew_server = 1195939785928364132
 
 
 @bot.event
@@ -61,9 +63,9 @@ async def on_member_join(member):
         f"{member.name} joined the {member.guild.name} server with id {member.guild.id}"
     )
     if member.guild.id == 1195939785928364132:
-        print(f"as you know by now that person joined the oleg server if i put the id right")
+        print(f"as you know by now that person joined the barhtolomew server if i put the id right")
         if member.id not in trusteds:
-            role = oleg_server.fetch_role(1195957915916447744)
+            role = barhtolomew_server.fetch_role(1195957915916447744)
             print(f"attempting to add role {role.name} to {member.name}")
             try: await member.add_roles(role)
             except: print(f'i failed to add role {role.name} to {member.name}')
@@ -208,7 +210,7 @@ async def channel_list(ctx, guild_id):
         await ctx.send('invalid guild id or failed to get guild')
         return
     channel_list = guild.channels
-    message = f"```{guild.name}'s channels\n"
+    message = f"{guild.name}'s channels\n"
     for channel in channel_list:
         try: message += f"Channel name: {channel.name}\n"
         except: message += f"Channel name: i failed to fetch\n"
@@ -221,8 +223,8 @@ async def channel_list(ctx, guild_id):
         try: message += f"Channel category name: {channel.category.name}\n"
         except: message += "Channel category name: None\n"
         message += "\n"
-    message +="```"
-    await ctx.send(message)
+    print(message)
+    await ctx.send('```' + message + '```', ephemeral=True)
 
 @bot.command(name="die")
 async def die(ctx):
