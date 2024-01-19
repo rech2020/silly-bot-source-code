@@ -1,1 +1,1 @@
-# silly bot souce code is real
+i am too lazy to make a proper readme
