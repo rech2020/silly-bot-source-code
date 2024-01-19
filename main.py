@@ -2,6 +2,8 @@ import disnake
 from disnake.ext import commands
 import os
 import time
+import subprocess
+import sys
 
 intents = disnake.Intents.all()
 
@@ -289,8 +291,8 @@ async def die(ctx):
 @bot.command(name='reload')
 async def reload(ctx):
     await ctx.send('ok wait')
-    os.system('python run.py')
-    exit()
+    subprocess.Popen(['python', 'run.py'])
+    sys.exit(0)
 
 bot.load_extension("cogs.ping")
 
