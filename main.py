@@ -3,11 +3,9 @@ from disnake.ext import commands
 import os
 import time
 
-intents = disnake.Intents.default()
-intents.message_content = True
-intents.members = True
+intents = disnake.Intents.all()
 
-bot = commands.Bot(command_prefix="hey silly ", reload=True, intents=intents)
+bot = commands.Bot(command_prefix="ba!", reload=True, intents=intents)
 
 # people ids
 hexahedron1 = 801078409076670494
@@ -30,6 +28,8 @@ barhtolomew_server = 1195939785928364132
 
 @bot.event
 async def on_ready():
+    channel = bot.get_channel(1197770600178003981)
+    slinx_channel = bot.get_channel(1042064947867287646)
     print("Powerup inniciated.")
     print(f"Logged in as {bot.user} (ID: {bot.user.id})\n------")
     print("setting presence")
@@ -42,6 +42,10 @@ async def on_ready():
         activity=disnake.Game(f"with {people} people on {len(bot.guilds)} servers"),
     )
     print("presence changed\n-----")
+    try: await channel.send("hello gordon")
+    except: print('somehow failed to send message?????')
+    try: await slinx_channel.send("hello gordon")
+    except: print('somehow failed to send message????')
 
 
 @bot.event
@@ -84,7 +88,7 @@ async def helpp(ctx):
         await ctx.send("no i will not help you")
     else:
         await ctx.send("this is not implemented yet <:typing:1195957954193653990>")
-        await ctx.send("anyways\nhttps://discord.com/invite/CADYGFuYcc")
+        await ctx.send("anyways \n https://discord.com/invite/CADYGFuYcc")
 
 
 @bot.slash_command(name="buttons", description="testing buttons")
@@ -158,7 +162,8 @@ async def say(ctx, text: str, guild_id: str = None, channel_id: str = None):
 async def guild_info(inter, guild_id):
     try: guild_id = int(guild_id)
     except:
-        await inter.response.send_message('not an id :typing:')
+        await inter.response.send_message('not an id <:typing:1195957954193653990>')
+        return
     guild = bot.get_guild(guild_id)
     if guild is None:
         await inter.response.send_message("Guild not found.")
@@ -204,7 +209,10 @@ async def servers_list(ctx):
 
 @bot.slash_command(name='channel_list', description='get list  of channels of a server that bot is in')
 async def channel_list(ctx, guild_id):
-    guild_id = int(guild_id)
+    try: guild_id = int(guild_id)
+    except:
+        await ctx.send('not an id <:typing:1195957954193653990>')
+        return
     guild = bot.get_guild(guild_id)
     if guild is None:
         await ctx.send('invalid guild id or failed to get guild')
@@ -226,6 +234,47 @@ async def channel_list(ctx, guild_id):
     print(message)
     await ctx.send('```' + message + '```', ephemeral=True)
 
+@bot.command(name="emojis")
+async def emojis(ctx):
+    if ctx.author.id in trusteds:
+        message = ""
+        for guild in bot.guilds:
+            message = f"{guild.name}'s emojis:\n"
+            for emoji in guild.emojis:
+                animated = emoji.animated
+                message += "<"
+                if animated:
+                    message += "a"
+                message += f":{emoji.name}:{emoji.id}>"
+            try: await ctx.send(message)
+            except: await ctx.send(f'failed to send message because {guild.name} has too many emojis🎉🎉🎉🎉🎉🎉🎉🎉')
+    else:
+        await ctx.send('this is ~~not~~ implemented yet <:typing:1195957954193653990>')
+
+@bot.command(name='inviter', description='attempt to create invite to a guild')
+async def inviter(ctx, guild_id):
+    if ctx.author.id in trusteds:
+        try: guild_id = int(guild_id)
+        except:
+            await ctx.send('not an id <:typing:1195957954193653990>')
+            return
+        guild = bot.get_guild(guild_id)
+        try: permissions = guild.me.guild_permissions
+        except: await ctx.send('i am not in that server <:typing:1195957954193653990>')
+        if guild is None:
+            await ctx.send('invalid guild id or failed to get guild')
+            return
+        channel_list = guild.text_channels
+        if permissions.create_instant_invite:
+            for channel in channel_list:
+                invite = await channel.create_invite()
+                try: await ctx.send(f"{invite.url}")
+                except: await ctx.send(f"i failed to send invite🎉🎉🎉🎉🎉🎉🎉🎉")
+        else:
+            await ctx.send("i don't have permission to make invite in that server🎉🎉🎉🎉🎉🎉🎉")
+    else:
+        await ctx.send("perms issue")
+
 @bot.command(name="die")
 async def die(ctx):
     if ctx.author.id in trusteds:
@@ -237,6 +286,11 @@ async def die(ctx):
         await ctx.send("nuh uh")
         print(f"{ctx.author.name} tried to kill me but failed due to perms issue")
 
+@bot.command(name='reload')
+async def reload(ctx):
+    await ctx.send('ok wait')
+    os.system('python run.py')
+    exit()
 
 bot.load_extension("cogs.ping")
 
