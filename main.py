@@ -27,6 +27,17 @@ retards = [theguywhocantcook, ihatethisguy]
 # servers
 barhtolomew_server = 1195939785928364132
 
+async def status_resync():
+    print("resyncing presence")
+    people = 0
+    for every in bot.guilds:
+        people += every.member_count
+        print(f"{people} people... ({every.member_count} people from {every.name})")
+    await bot.change_presence(
+        status=disnake.Status.online,
+        activity=disnake.Game(f"with {people} people on {len(bot.guilds)} servers"),
+    )
+    print("presence changed\n-----")
 
 @bot.event
 async def on_ready():
@@ -49,6 +60,10 @@ async def on_ready():
     try: await slinx_channel.send("hello gordon")
     except: print('somehow failed to send message????')
 
+@bot.event
+async def on_message(messag):
+    #this is not implemented yet <:typing:1195957954193653990>
+    pass
 
 @bot.event
 async def on_guild_remove(guild):
@@ -75,6 +90,7 @@ async def on_member_join(member):
             print(f"attempting to add role {role.name} to {member.name}")
             try: await member.add_roles(role)
             except: print(f'i failed to add role {role.name} to {member.name}')
+    status_resync()
 
 
 @bot.user_command()
