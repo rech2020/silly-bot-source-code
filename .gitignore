@@ -6,6 +6,7 @@ token.txt
 
 # C extensions
 *.so
+*.ink
 
 # Distribution / packaging
 .Python
