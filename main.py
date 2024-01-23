@@ -4,8 +4,13 @@ import os
 import time
 import subprocess
 import sys
-
+import random
+from random import *
+from glibberisher import *
+from gibberish import Gibberish
 intents = disnake.Intents.all()
+
+gib = Gibberish()
 
 bot = commands.Bot(command_prefix="ba!", reload=True, intents=intents)
 
@@ -20,6 +25,8 @@ d = 1143072932596305932
 # bad people ids (cant say who they really are)
 theguywhocantcook = 691598832273850440
 ihatethisguy = 795404576839958529
+badperson = 318571303881801728
+violitesrulenine = 735971349973172355
 # trusteds list
 trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
 # retards list
@@ -43,6 +50,7 @@ async def status_resync():
 async def on_ready():
     channel = bot.get_channel(1197770600178003981)
     slinx_channel = bot.get_channel(1042064947867287646)
+    randomnum = randint(1, 4)
     print("Powerup inniciated.")
     print(f"Logged in as {bot.user} (ID: {bot.user.id})\n------")
     print("setting presence")
@@ -57,13 +65,21 @@ async def on_ready():
     print("presence changed\n-----")
     try: await channel.send("hello gordon")
     except: print('somehow failed to send message?????')
-    try: await slinx_channel.send("hello gordon")
-    except: print('somehow failed to send message????')
+    if randomnum == 1:
+        try: await slinx_channel.send("i have been started or reloaded") # TODO add some wake up quotes
+        except: print('somehow failed to send message????')
 
-@bot.event
-async def on_message(messag):
-    #this is not implemented yet <:typing:1195957954193653990>
-    pass
+#@bot.event
+#async def on_message(message):
+#    if message == "hey bartholomew kys":
+#        if message.author.id == rech2020:
+#            await message.channel.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
+#            print("i am dead")
+#            time.sleep(1)
+#            exit()
+#        else:
+#            await message.channel.send("nuh uh")
+#            print(f"{message.author.name} tried to kill me but failed due to perms issue")
 
 @bot.event
 async def on_guild_remove(guild):
@@ -168,10 +184,12 @@ async def say(ctx, text: str, guild_id: str = None, channel_id: str = None):
         await ctx.send("ok", ephemeral=True)
         guild = bot.get_guild(guild_id)
         channel = guild.get_channel(channel_id)
-        await channel.send(text)
-        print(
-            f"{ctx.author.name}({ctx.author.id}) used /say to say in {guild.name} #{channel.name}\n{text}"
-        )
+        try:
+            await channel.send(text)
+            print(f"{ctx.author.name}({ctx.author.id}) used /say to say in {guild.name} #{channel.name}\n{text}")
+        except:
+            try: print(f'i failed to send the message("{text}") in {channel.name} maybe because i am missing permissions\n anyways {ctx.author.name} asked me to send that message')
+            except: print(f'i failed to send the message ("{text}") in {ctx.channel.name} maybe because i am missing permissions\n anyways {ctx.author.name} asked me to send that message')
     else:
         await ctx.send("nuh uh", ephemeral=True)
 
@@ -293,6 +311,45 @@ async def inviter(ctx, guild_id):
     else:
         await ctx.send("perms issue")
 
+@bot.command(name='gibberish')
+async def gibberisher(ctx):
+    await ctx.send("this is not implemented yet <:typing:1195957954193653990>")
+
+@bot.command(name='glibberish')
+async def glibberish(ctx: disnake.MessageInteraction):
+    await ctx.send(
+        "choose type of glibberish",
+        components=[
+            disnake.ui.Button(
+                label="word",
+                style=disnake.ButtonStyle.secondary,
+                custom_id="word",
+            ),
+            disnake.ui.Button(
+                label="sentence",
+                style=disnake.ButtonStyle.secondary,
+                custom_id="sentence",
+            ),
+            disnake.ui.Button(
+                label="text",
+                style=disnake.ButtonStyle.secondary,
+                custom_id="text",
+            ),
+        ],
+    )
+
+@bot.listen("on_button_click")
+async def help_listener(ctx: disnake.MessageInteraction):
+    if ctx.component.custom_id not in ["word", "sentence", "text"]:
+        return
+
+    if ctx.component.custom_id == "word":
+        await ctx.send(f"here's your glibberish word: {gen_word()}")
+    elif ctx.component.custom_id == "sentence":
+        await ctx.send(f"here's your glibberish sentence: {gen_sentence()}")
+    elif ctx.component.custom_id == "text":
+        await ctx.send(f"here's a glibberish text:\n```\n{gen_text()}\n```")
+
 @bot.command(name="die")
 async def die(ctx):
     if ctx.author.id in trusteds:
@@ -307,7 +364,7 @@ async def die(ctx):
 @bot.command(name='reload')
 async def reload(ctx):
     await ctx.send('ok wait')
-    subprocess.Popen(['python', 'run.py'])
+    subprocess.Popen(['python', 'main.py'])
     sys.exit(0)
 
 bot.load_extension("cogs.ping")
