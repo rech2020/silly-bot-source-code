@@ -22,15 +22,15 @@ rech2020 = 710621353128099901
 slinx92 = 903650492754845728
 kesslon = 1143072932596305932
 d = 1143072932596305932
-# bad people ids (cant say who they really are)
-theguywhocantcook = 691598832273850440
-ihatethisguy = 795404576839958529
-badperson = 318571303881801728
-violitesrulenine = 735971349973172355
+# bad people ids 
+goober = 691598832273850440
+iforgotwhoisthat = 795404576839958529
+roll_cake = 318571303881801728
+tintin = 735971349973172355
 # trusteds list
 trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
 # retards list
-retards = [theguywhocantcook, ihatethisguy]
+retards = [goober, iforgotwhoisthat, roll_cake, tintin]
 # servers
 barhtolomew_server = 1195939785928364132
 
@@ -97,16 +97,31 @@ async def on_guild_remove(guild):
 @bot.event
 async def on_member_join(member):
     print(
-        f"{member.name} joined the {member.guild.name} server with id {member.guild.id}"
+        f"{member.name}(user with id {member.id}) joined the {member.guild.name} server aka server with id {member.guild.id}"
     )
-    if member.guild.id == 1195939785928364132:
+    if member.id in retards:
+        print("wait a second... is that... is that that one person from the retards list!?")
+        print("you know what i am going to ban that person")
+        print("attempting to ban that person...")
+        try:
+            await member.guild.ban(member.id, delete_message_days=0, reason='is in retards list')
+        except:
+            print("i failed to ban that person, time for plan B")
+            role = barhtolomew_server.get_role(1195957915916447744)
+            print(f"attempting to add role {role.name} to {member.name}")
+            try: await member.add_roles(role)
+            except:
+                print(f"i have failed to add role {role.name} to {member.name}")
+                moderator_only = bot.get_channel(1195940341438746714)
+                await moderator_only.send(f"hello <@&1195946019351973888> HELP\n<@{member.id}> HAS GOT PAST BOTH DEFENCES\nSOMEBODY BAN THIS PERSON")
+    elif member.guild.id == 1195939785928364132:
         print(f"as you know by now that person joined the barhtolomew server if i put the id right")
         if member.id not in trusteds:
-            role = barhtolomew_server.fetch_role(1195957915916447744)
+            role = barhtolomew_server.get_role(1199173994654486738)
             print(f"attempting to add role {role.name} to {member.name}")
             try: await member.add_roles(role)
             except: print(f'i failed to add role {role.name} to {member.name}')
-    status_resync()
+    await status_resync()
 
 
 @bot.user_command()

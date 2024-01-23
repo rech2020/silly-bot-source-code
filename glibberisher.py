@@ -29,5 +29,3 @@ def gen_text(num_sentences=10, the=False):
         if the:
             sentences += '\n'
     return ''.join(sentences)
-
-print(gen_text())
