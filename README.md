@@ -1,1 +1,6 @@
-i am too lazy to make a proper readme
+ok so before running you need to create file `token.txt` in which you put token
+
+also you need to install following python packages for it to work:
+* disnake
+* gibberish
+* subprocess
