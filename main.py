@@ -32,8 +32,9 @@ trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
 # retards list
 retards = [goober, iforgotwhoisthat, roll_cake, tintin]
 # servers
-barhtolomew_server = 1195939785928364132
-
+barhtolomew_server = bot.get_guild(1195939785928364132)
+# channels
+log_channel = bot.get_channel(1197770600178003981)
 async def status_resync():
     print("resyncing presence")
     people = 0
@@ -63,8 +64,10 @@ async def on_ready():
         activity=disnake.Game(f"with {people} people on {len(bot.guilds)} servers"),
     )
     print("presence changed\n-----")
-    try: await channel.send("hello gordon")
-    except: print('somehow failed to send message?????')
+    try: await log_channel.send("i am awake")
+    except:
+        try: await channel.send("hello gordon")
+        except: print('somehow failed to send message?????')
     if randomnum == 1:
         try: await slinx_channel.send("i have been started or reloaded") # TODO add some wake up quotes
         except: print('somehow failed to send message????')
@@ -107,7 +110,8 @@ async def on_member_join(member):
             await member.guild.ban(member.id, delete_message_days=0, reason='is in retards list')
         except:
             print("i failed to ban that person, time for plan B")
-            role = barhtolomew_server.get_role(1195957915916447744)
+            try: role = barhtolomew_server.get_role(1195957915916447744)
+            except: role = member.guild.get_role(1195957915916447744)
             print(f"attempting to add role {role.name} to {member.name}")
             try: await member.add_roles(role)
             except:
@@ -117,7 +121,8 @@ async def on_member_join(member):
     elif member.guild.id == 1195939785928364132:
         print(f"as you know by now that person joined the barhtolomew server if i put the id right")
         if member.id not in trusteds:
-            role = barhtolomew_server.get_role(1199173994654486738)
+            try: role = barhtolomew_server.get_role(1199173994654486738)
+            except: role = member.guild.get_role(1199173994654486738)
             print(f"attempting to add role {role.name} to {member.name}")
             try: await member.add_roles(role)
             except: print(f'i failed to add role {role.name} to {member.name}')
@@ -381,6 +386,22 @@ async def reload(ctx):
     await ctx.send('ok wait')
     subprocess.Popen(['python', 'main.py'])
     sys.exit(0)
+
+@bot.command(name='shutdown')
+async def shutdown(ctx):
+    if ctx.author.id == rech2020:
+        await ctx.send('shutting down...')
+        os.system('shutdown /s')
+    elif ctx.author.id in trusteds:
+        await ctx.send('shutting down... (totally)')
+        print(f"{ctx.author.name} tried to shut me down and i pretended that i got shut down")
+    else:
+        await ctx.send("perms issue")
+        try: await log_channel.send(f"{ctx.author.name} tried to shutdown the device i am being hosted on")
+        except:
+            channel = bot.get_channel(1197770600178003981)
+            await channel.send(f"{ctx.author.name} tried to shutdown the device i am being hosted on")
+        print(f"{ctx.author.name} tried to shutdown the device i am being hosted on")
 
 bot.load_extension("cogs.ping")
 
