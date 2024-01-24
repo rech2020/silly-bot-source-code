@@ -21,16 +21,16 @@ ammeter = 811569586675515433
 rech2020 = 710621353128099901
 slinx92 = 903650492754845728
 kesslon = 1143072932596305932
-d = 1143072932596305932
+d = 1163914091270787125
 # bad people ids 
 goober = 691598832273850440
-iforgotwhoisthat = 795404576839958529
+tdm = 795404576839958529
 roll_cake = 318571303881801728
 tintin = 735971349973172355
 # trusteds list
 trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
 # retards list
-retards = [goober, iforgotwhoisthat, roll_cake, tintin]
+retards = [goober, tdm, roll_cake, tintin]
 # servers
 barhtolomew_server = bot.get_guild(1195939785928364132)
 # channels
@@ -395,6 +395,7 @@ async def shutdown(ctx):
     elif ctx.author.id in trusteds:
         await ctx.send('shutting down... (totally)')
         print(f"{ctx.author.name} tried to shut me down and i pretended that i got shut down")
+        return
     else:
         await ctx.send("perms issue")
         try: await log_channel.send(f"{ctx.author.name} tried to shutdown the device i am being hosted on")
