@@ -6,7 +6,7 @@ wakeup_splashes = [
     "It's me Gordon, Barney from Black Mesa",
     "Powerup initiated.",
     "hello i am awake and it's currently {datetime.now().strftime('%H:%M')}",
-    "hello this is a wake up splash"
+    "hello this is a wake up splash",
     ]
 
 wakeup_splashes_descriptions = [
@@ -14,7 +14,7 @@ wakeup_splashes_descriptions = [
     "half life 2",
     "portal 2",
     "original quote by me",
-    "original quote by me"
+    "original quote by me",
 ]
 
 splashes = [
@@ -23,6 +23,12 @@ splashes = [
     "hello i just wanted to tell you <@691598832273850440> can go kys i hate him",
     "hello i just wanted to tell you <@795404576839958529> can go kys i hate him",
     "hello i just wanted to tell you <@735971349973172355> can go kys i hate him",
+    "Also try icosahedron!",
+    "Also try ammeter!",
+    "did i leak my token",
+    "nevermind",
+    "welcome to the caterture science worship-aided catching center\nWe hope your brief detention in the relaxation vault has been a pleasant one.\nYour worships have been sumbitted and now we can begin the catching proper.\nBefore we start, however, keep in mind that although fun and profit are the primary goals of all catching center activities, serious injuries may occur. \nFor your own safety and the safety of others, please refrain from touching \n[inaudible] \nstand back. The cat will appear in three. two. one.",
+    "currently 11 splashes",
 ]
 
 splashes_descriptions = [
@@ -30,7 +36,13 @@ splashes_descriptions = [
     "quote of me",
     "quote of me except i put goober's id",
     "quote of me except i put tdm's id",
-    "quote of me except i put tintin's id"
+    "quote of me except i put tintin's id",
+    "Also try icosahedron!",
+    "Also try ammeter!",
+    "-ammeter",
+    "nvm",
+    "https://discord.com/channels/1162827693075746876/1172983850587148348/117298385058714834",
+    "just a splash counter",
 ]
 
 pickle.dump(wakeup_splashes, open("wakeup.dat", "wb"))

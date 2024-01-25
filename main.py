@@ -25,17 +25,20 @@ slinx92 = 903650492754845728
 kesslon = 1143072932596305932
 d = 1163914091270787125
 
-# bad people ids 
+# bad people ids (mostly people from apg)
 goober = 691598832273850440
 tdm = 795404576839958529
 roll_cake = 318571303881801728
 tintin = 735971349973172355
 
+# specially bad people ids
+exobyte = 1043523548339241001
+
 # trusteds list
 trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
 
 # retards list
-retards = [goober, tdm, roll_cake, tintin]
+retards = [goober, tdm, roll_cake, tintin, exobyte]
 
 # servers
 barhtolomew_server = bot.get_guild(1195939785928364132)
@@ -87,7 +90,7 @@ async def on_ready():
         except: print('somehow failed to send message????')
     
     while True:
-        print("-----\n")
+        print("-----")
         channels=open("spamking_channels.txt").read().split()
         for chaneel in channels:
             channel=bot.get_channel(int(chaneel))
@@ -100,7 +103,7 @@ async def on_ready():
                     for everything in channels:
                         if everything!=chaneel:
                             spamkingchannels.write(f"{everything}\n")
-        print("-----\n")
+        print("-----")
         await asyncio.sleep(150)
 
 #@bot.event
@@ -134,8 +137,8 @@ async def on_member_join(member):
         f"{member.name}(user with id {member.id}) joined the {member.guild.name} server aka server with id {member.guild.id}"
     )
     if member.id in retards:
-        print("wait a second... is that... is that that one person from the retards list!?")
-        print("you know what i am going to ban that person")
+        print(f"wait a second... is that\nis that fucking {member.name}")
+        print("you know what screw it i am going to ban that person")
         print("attempting to ban that person...")
         try:
             await member.guild.ban(member.id, delete_message_days=0, reason='is in retards list')
@@ -147,8 +150,9 @@ async def on_member_join(member):
             try: await member.add_roles(role)
             except:
                 print(f"i have failed to add role {role.name} to {member.name}")
-                moderator_only = bot.get_channel(1195940341438746714)
-                await moderator_only.send(f"hello <@&1195946019351973888> HELP\n<@{member.id}> HAS GOT PAST BOTH DEFENCES\nSOMEBODY BAN THIS PERSON")
+                if member.guild.id == barhtolomew_server:
+                    moderator_only = bot.get_channel(1195940341438746714)
+                    await moderator_only.send(f"hello <@&1195946019351973888> help\n<@{member.id}> has got past both our defences\nwe're fucking doomed i think")
     elif member.guild.id == 1195939785928364132:
         print(f"as you know by now that person joined the barhtolomew server if i put the id right")
         if member.id not in trusteds:
@@ -320,7 +324,7 @@ async def send_splash(ctx, id:int):
     else:
         id=randint(0,lensplashes-1)
         embed=disnake.Embed(title=f"here is a random splash (№{id+1}/{lensplashes})",description=splashes[id])
-    footer_dict={"description": splashes_descriptions[id]}
+    footer_dict={"text": splashes_descriptions[id]}
     embed.set_footer(**footer_dict)
     await ctx.send(embed=embed)
 
