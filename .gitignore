@@ -1,7 +1,7 @@
 # files
 token.txt
 fake token.txt
-spamking_channels.txt
+spamking channels.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -13,7 +13,6 @@ __pycache__/
 *.dat
 *.gitignore
 *.ink
-*.txt
 # Distribution / packaging
 .Python
 build/

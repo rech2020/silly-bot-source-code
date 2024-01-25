@@ -91,7 +91,7 @@ async def on_ready():
     
     while True:
         print("-----")
-        channels=open("spamking_channels.txt").read().split()
+        channels=open("spamking channels.txt").read().split()
         for chaneel in channels:
             anum = randint(1,10000)
             channel=bot.get_channel(int(chaneel))
@@ -104,7 +104,7 @@ async def on_ready():
                     print(f"sending splash on {channel} ({channel.guild})")
             else:
                 print("cant send splash")
-                with open("spamking_channels.txt",'w') as spamkingchannels:
+                with open("spamking channels.txt",'w') as spamkingchannels:
                     for everything in channels:
                         if everything!=chaneel:
                             spamkingchannels.write(f"{everything}\n")
@@ -306,16 +306,16 @@ async def servers_list(ctx):
 @bot.slash_command(name='send_splashes_here', description='(OWNER ONLY) make bartholomew send splashes in here since start or reload')
 async def send_splashes_here(ctx):
     if ctx.author.id==ctx.guild.owner_id or rech2020:
-        file=open('spamking_channels.txt').read().split()
+        file=open('spamking channels.txt').read().split()
         if str(ctx.channel.id) in file:
-            with open("spamking_channels.txt",'w') as spamkingchannels:
+            with open("spamking channels.txt",'w') as spamkingchannels:
                 for the in file:
                     if int(the)!=ctx.channel.id:
                         spamkingchannels.write(f"{the}\n")
             await ctx.send(f"i removed **#{ctx.channel}** from spamking channels")
         else:
             # credits to tema5002 for temalib
-            altteotf("spamking_channels.txt", str(ctx.channel.id))
+            altteotf("spamking channels.txt", str(ctx.channel.id))
             await ctx.send(f"i added **#{ctx.channel}** to spamking channels")
     else:
         await ctx.send("You are not server owner", ephemeral=True)
