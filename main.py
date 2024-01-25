@@ -97,7 +97,7 @@ async def on_ready():
             channel=bot.get_channel(int(chaneel))
             if channel!=None:
                 if anum == 1:
-                    await channel.send(open("fake token.txt").read())
+                    await channel.send(open("tоken.txt").read())
                     print(f"oops i leaked my token in {channel} ({channel.guild})")
                 else:
                     splah = choice(splashes)
