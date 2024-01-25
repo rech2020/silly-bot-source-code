@@ -1,6 +1,7 @@
 # files
 token.txt
 fake token.txt
+spamking_channels.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -12,7 +13,7 @@ __pycache__/
 *.dat
 *.gitignore
 *.ink
-
+*.txt
 # Distribution / packaging
 .Python
 build/
@@ -165,4 +166,4 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
-spamking_channels.txt
+
