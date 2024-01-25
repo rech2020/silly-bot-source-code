@@ -87,7 +87,7 @@ async def on_ready():
         except: print('somehow failed to send message????')
     
     while True:
-        print("\n")
+        print("-----\n")
         channels=open("spamking_channels.txt").read().split()
         for chaneel in channels:
             channel=bot.get_channel(int(chaneel))
@@ -100,7 +100,7 @@ async def on_ready():
                     for everything in channels:
                         if everything!=chaneel:
                             spamkingchannels.write(f"{everything}\n")
-        print("\n")
+        print("-----\n")
         await asyncio.sleep(150)
 
 #@bot.event
