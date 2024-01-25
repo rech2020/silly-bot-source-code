@@ -100,8 +100,9 @@ async def on_ready():
                     await channel.send(open("fake token.txt").read())
                     print(f"oops i leaked my token in {channel} ({channel.guild})")
                 else:
-                    await channel.send(choice(splashes))
-                    print(f"sending splash on {channel} ({channel.guild})")
+                    splah = choice(splashes)
+                    await channel.send(splah)
+                    print(f"sending splash №{splashes.index(splah)+1} on {channel} ({channel.guild})")
             else:
                 print("cant send splash")
                 with open("spamking channels.txt",'w') as spamkingchannels:
