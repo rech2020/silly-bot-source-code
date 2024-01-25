@@ -1,13 +1,14 @@
 import disnake
 from disnake.ext import commands
 import os
-import time
+import asyncio
 import subprocess
 import sys
 import random
 from random import *
 from glibberisher import *
 from gibberish import Gibberish
+import pickle
 intents = disnake.Intents.all()
 
 gib = Gibberish()
@@ -22,19 +23,31 @@ rech2020 = 710621353128099901
 slinx92 = 903650492754845728
 kesslon = 1143072932596305932
 d = 1163914091270787125
+
 # bad people ids 
 goober = 691598832273850440
 tdm = 795404576839958529
 roll_cake = 318571303881801728
 tintin = 735971349973172355
+
 # trusteds list
 trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
+
 # retards list
 retards = [goober, tdm, roll_cake, tintin]
+
 # servers
 barhtolomew_server = bot.get_guild(1195939785928364132)
+
 # channels
 log_channel = bot.get_channel(1197770600178003981)
+
+# splashes and etc
+wakeup_splashes = pickle.load(open("wakeup.dat", "wb"))
+wakeup_splashes_descriptions = pickle.load(open("wakeup_descriptions.dat", "wb"))
+splashes = pickle.load(open("splashes.dat", "rb"))
+splashes_descriptions = pickle.load(open("splashes_descriptions.dat", "rb"))
+
 async def status_resync():
     print("resyncing presence")
     people = 0
@@ -71,6 +84,23 @@ async def on_ready():
     if randomnum == 1:
         try: await slinx_channel.send("i have been started or reloaded") # TODO add some wake up quotes
         except: print('somehow failed to send message????')
+    
+    while True:
+        print("\n")
+        channels=open("spamking_channels.txt").read().split()
+        for chaneel in channels:
+            channel=bot.get_channel(int(chaneel))
+            if channel!=None:
+                await channel.send(choice(splashes))
+                print(f"sending splash on {channel} ({channel.guild})")
+            else:
+                print("cant send splash")
+                with open("spamking_channels.txt",'w') as splasheschannels:
+                    for everything in channels:
+                        if everything!=chaneel:
+                            splasheschannels.write(f"{everything}\n")
+        print("\n")
+        await asyncio.sleep(150)
 
 #@bot.event
 #async def on_message(message):
@@ -78,7 +108,7 @@ async def on_ready():
 #        if message.author.id == rech2020:
 #            await message.channel.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
 #            print("i am dead")
-#            time.sleep(1)
+#            await asyncio.sleep(1)
 #            exit()
 #        else:
 #            await message.channel.send("nuh uh")
@@ -375,7 +405,7 @@ async def die(ctx):
     if ctx.author.id in trusteds:
         await ctx.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
         print("i am dead")
-        time.sleep(1)
+        await asyncio.sleep(1)
         exit()
     else:
         await ctx.send("nuh uh")
