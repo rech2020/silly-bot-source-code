@@ -1,5 +1,6 @@
 # files
 token.txt
+fake token.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

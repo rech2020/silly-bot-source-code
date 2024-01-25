@@ -93,10 +93,15 @@ async def on_ready():
         print("-----")
         channels=open("spamking_channels.txt").read().split()
         for chaneel in channels:
+            anum = randint(1,10000)
             channel=bot.get_channel(int(chaneel))
             if channel!=None:
-                await channel.send(choice(splashes))
-                print(f"sending splash on {channel} ({channel.guild})")
+                if anum == 1:
+                    await channel.send(open("fake token.txt").read())
+                    print(f"oops i leaked my token in {channel} ({channel.guild})")
+                else:
+                    await channel.send(choice(splashes))
+                    print(f"sending splash on {channel} ({channel.guild})")
             else:
                 print("cant send splash")
                 with open("spamking_channels.txt",'w') as spamkingchannels:
