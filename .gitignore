@@ -10,6 +10,7 @@ __pycache__/
 *.so
 *.dat
 *.gitignore
+*.ink
 
 # Distribution / packaging
 .Python
