@@ -43,8 +43,8 @@ barhtolomew_server = bot.get_guild(1195939785928364132)
 log_channel = bot.get_channel(1197770600178003981)
 
 # splashes and etc
-wakeup_splashes = pickle.load(open("wakeup.dat", "wb"))
-wakeup_splashes_descriptions = pickle.load(open("wakeup_descriptions.dat", "wb"))
+wakeup_splashes = pickle.load(open("wakeup.dat", "rb"))
+wakeup_splashes_descriptions = pickle.load(open("wakeup_descriptions.dat", "rb"))
 splashes = pickle.load(open("splashes.dat", "rb"))
 splashes_descriptions = pickle.load(open("splashes_descriptions.dat", "rb"))
 
