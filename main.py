@@ -24,13 +24,13 @@ kesslon = 1143072932596305932
 d = 1143072932596305932
 # bad people ids 
 goober = 691598832273850440
-iforgotwhoisthat = 795404576839958529
+tdm = 795404576839958529
 roll_cake = 318571303881801728
 tintin = 735971349973172355
 # trusteds list
 trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
 # retards list
-retards = [goober, iforgotwhoisthat, roll_cake, tintin]
+retards = [goober, tdm, roll_cake, tintin]
 # servers
 barhtolomew_server = 1195939785928364132
 
