@@ -1,11 +1,15 @@
+# files
+token.txt
+spamking_channels.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-token.txt
 
 # C extensions
 *.so
+*.dat
+*.gitignore
 
 # Distribution / packaging
 .Python

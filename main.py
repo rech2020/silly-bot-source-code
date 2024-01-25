@@ -9,6 +9,7 @@ from random import *
 from glibberisher import *
 from gibberish import Gibberish
 import pickle
+from file_libraries.temalib import *
 intents = disnake.Intents.all()
 
 gib = Gibberish()
@@ -64,7 +65,7 @@ async def status_resync():
 async def on_ready():
     channel = bot.get_channel(1197770600178003981)
     slinx_channel = bot.get_channel(1042064947867287646)
-    randomnum = randint(1, 4)
+    randomnum = randint(1, 2)
     print("Powerup inniciated.")
     print(f"Logged in as {bot.user} (ID: {bot.user.id})\n------")
     print("setting presence")
@@ -79,10 +80,10 @@ async def on_ready():
     print("presence changed\n-----")
     try: await log_channel.send("i am awake")
     except:
-        try: await channel.send("hello gordon")
+        try: await channel.send(choice(wakeup_splashes))
         except: print('somehow failed to send message?????')
     if randomnum == 1:
-        try: await slinx_channel.send("i have been started or reloaded") # TODO add some wake up quotes
+        try: await slinx_channel.send(choice(wakeup_splashes))
         except: print('somehow failed to send message????')
     
     while True:
@@ -95,10 +96,10 @@ async def on_ready():
                 print(f"sending splash on {channel} ({channel.guild})")
             else:
                 print("cant send splash")
-                with open("spamking_channels.txt",'w') as splasheschannels:
+                with open("spamking_channels.txt",'w') as spamkingchannels:
                     for everything in channels:
                         if everything!=chaneel:
-                            splasheschannels.write(f"{everything}\n")
+                            spamkingchannels.write(f"{everything}\n")
         print("\n")
         await asyncio.sleep(150)
 
@@ -292,6 +293,36 @@ async def servers_list(ctx):
         except: await ctx.send('message got too long')
     else:
         await ctx.send('perms issue')
+
+@bot.slash_command(name='send_splashes_here', description='(OWNER ONLY) make bartholomew send splashes in here since start or reload')
+async def send_splashes_here(ctx):
+    if ctx.author.id==ctx.guild.owner_id or rech2020:
+        file=open('spamking_channels.txt').read().split()
+        if str(ctx.channel.id) in file:
+            with open("spamking_channels.txt",'w') as spamkingchannels:
+                for the in file:
+                    if int(the)!=ctx.channel.id:
+                        spamkingchannels.write(f"{the}\n")
+            await ctx.send(f"i removed **#{ctx.channel}** from spamking channels")
+        else:
+            # credits to tema5002 for temalib
+            altteotf("spamking_channels.txt", str(ctx.channel.id))
+            await ctx.send(f"i added **#{ctx.channel}** to spamking channels")
+    else:
+        await ctx.send("You are not server owner", ephemeral=True)
+
+@bot.slash_command(name='send_splash', description='send a splash')
+async def send_splash(ctx, id:int):
+    id-=1
+    lensplashes=len(splashes)
+    if 0<=id<lensplashes:
+        embed=disnake.Embed(title=f"splash number {id+1} out of {lensplashes}",description=splashes[id])
+    else:
+        id=randint(0,lensplashes-1)
+        embed=disnake.Embed(title=f"here is a random splash (№{id+1}/{lensplashes})",description=splashes[id])
+    footer_dict={"description": splashes_descriptions[id]}
+    embed.set_footer(**footer_dict)
+    await ctx.send(embed=embed)
 
 @bot.slash_command(name='channel_list', description='get list  of channels of a server that bot is in')
 async def channel_list(ctx, guild_id):
