@@ -47,8 +47,8 @@ splashes_descriptions = [
     "nvm",
     "https://discord.com/channels/1162827693075746876/1172983850587148348/117298385058714834",
     "a misspelled inside joke",
-    "idk what to type here"
-    "idk what to type here"
+    "idk what to type here",
+    "idk what to type here",
     "just a splash counter",
 ]
 
