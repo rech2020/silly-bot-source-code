@@ -126,6 +126,11 @@ async def on_ready():
 #            print(f"{message.author.name} tried to kill me but failed due to perms issue")
 
 @bot.event
+async def on_guild_join(guild):
+    print(f"i have been added to {guild.name}")
+    status_resync()
+
+@bot.event
 async def on_guild_remove(guild):
     channel = bot.get_channel(1195947266855403590)
     try:
