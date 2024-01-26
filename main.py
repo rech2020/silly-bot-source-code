@@ -9,6 +9,7 @@ from random import *
 from glibberisher import *
 from gibberish import Gibberish
 import pickle
+import temalib
 from temalib import *
 intents = disnake.Intents.all()
 
@@ -316,7 +317,7 @@ async def send_splashes_here(ctx):
             await ctx.send(f"i removed **#{ctx.channel}** from spamking channels")
         else:
             # credits to tema5002 for temalib
-            temalib.altteotf("spamking channels.txt", str(ctx.channel.id))
+            altteotf("spamking channels.txt", str(ctx.channel.id))
             await ctx.send(f"i added **#{ctx.channel}** to spamking channels")
     else:
         await ctx.send("You are not server owner", ephemeral=True)
