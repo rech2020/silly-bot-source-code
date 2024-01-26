@@ -28,6 +28,7 @@ splashes = [
     "did i leak my token",
     "nevermind",
     "welcome to the caterture science worship-aided catching center\nWe hope your brief detention in the relaxation vault has been a pleasant one.\nYour worships have been sumbitted and now we can begin the catching proper.\nBefore we start, however, keep in mind that although fun and profit are the primary goals of all catching center activities, serious injuries may occur. \nFor your own safety and the safety of others, please refrain from touching \n[inaudible] \nstand back. The cat will appear in three. two. one.",
+    "antiragraba 🍏🍏🍏🍏🍏🍏🍏🍏🍏🍏",
     "currently {len(splashes)} splashes",
 ]
 splashes[splashes.index("currently {len(splashes)} splashes")]=f"currently {len(splashes)} splashes"
@@ -43,6 +44,7 @@ splashes_descriptions = [
     "-ammeter",
     "nvm",
     "https://discord.com/channels/1162827693075746876/1172983850587148348/117298385058714834",
+    "a misspelled inside joke",
     "just a splash counter",
 ]
 
