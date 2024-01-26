@@ -317,7 +317,7 @@ async def send_splashes_here(ctx):
             await ctx.send(f"i removed **#{ctx.channel}** from spamking channels")
         else:
             # credits to tema5002 for temalib
-            temalib.altteotf("spamking channels.txt", str(ctx.channel.id))
+            add_line("spamking channels.txt", str(ctx.channel.id))
             await ctx.send(f"i added **#{ctx.channel}** to spamking channels")
     else:
         await ctx.send("You are not server owner", ephemeral=True)
@@ -403,9 +403,44 @@ async def inviter(ctx, guild_id):
     else:
         await ctx.send("perms issue")
 
+
 @bot.command(name='gibberish')
 async def gibberisher(ctx):
-    await ctx.send("this is not implemented yet <:typing:1195957954193653990>")
+    try:
+        await ctx.send(
+            f"hello please make this work",
+            components=[
+                disnake.ui.Button(
+                    label="word",
+                    style=disnake.ButtonStyle.secondary,
+                    custom_id="word2",
+                ),
+                disnake.ui.Button(
+                    label="sentence",
+                    style=disnake.ButtonStyle.secondary,
+                    custom_id="sentence2",
+                ),
+                disnake.ui.Button(
+                    label="text",
+                    style=disnake.ButtonStyle.secondary,
+                    custom_id="text2",
+                ),
+                ],
+        )
+    except:
+        await ctx.send("it didn't work for some reason")
+
+@bot.listen("on_button_click")
+async def gibberish_listener(ctx: disnake.MessageInteraction):
+    if ctx.component.custom_id not in ["word2", "sentence2", "text2"]:
+        return
+
+    if ctx.component.custom_id == "word2":
+        await ctx.send(f"here's your gibberish word: {gib.generate_word()}")
+    elif ctx.component.custom_id == "sentence2":
+        await ctx.send(f"here's your gibberish sentence: {gen_sentence2()}")
+    elif ctx.component.custom_id == "text2":
+        await ctx.send(f"here's a gibberish text:\n```\n{gen_text2()}\n```")
 
 @bot.command(name='glibberish')
 async def glibberish(ctx: disnake.MessageInteraction):
@@ -431,7 +466,7 @@ async def glibberish(ctx: disnake.MessageInteraction):
     )
 
 @bot.listen("on_button_click")
-async def help_listener(ctx: disnake.MessageInteraction):
+async def glibberish_listener(ctx: disnake.MessageInteraction):
     if ctx.component.custom_id not in ["word", "sentence", "text"]:
         return
 
