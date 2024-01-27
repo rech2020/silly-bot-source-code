@@ -11,6 +11,8 @@ from gibberish import Gibberish
 import pickle
 import temalib
 from temalib import *
+import datetime
+import math
 intents = disnake.Intents.all()
 
 gib = Gibberish()
@@ -52,6 +54,33 @@ wakeup_splashes = pickle.load(open("wakeup.dat", "rb"))
 wakeup_splashes_descriptions = pickle.load(open("wakeup_descriptions.dat", "rb"))
 splashes = pickle.load(open("splashes.dat", "rb"))
 splashes_descriptions = pickle.load(open("splashes_descriptions.dat", "rb"))
+
+save_file_trusteds = trusteds
+save_file_cooldowns = {}
+
+send_file_cooldowns = {}
+
+def makeembed(page, list):
+    pages = math.ceil(len(list)/10)
+    guh=""
+    if page == pages:
+        for every in list[10*(page-1):]:
+            guh+=f"- {every}\n"
+    else:
+        for every in list[10*(page-1):10*(page-1)+10]:
+            guh+=f"- {every}\n"
+    return disnake.Embed(title=f"Page {page}/{pages}", description=guh)
+
+def makecomponents(the):
+    if the != None:
+        components = []
+        h = int(the[5:the.find("/")])
+        g = int(the[the.find("/") + 1:])
+        if h != 1:
+            components+=[disnake.ui.Button(label="<", style=disnake.ButtonStyle.secondary, custom_id=str(h-1))]
+        if h != g:
+            components+=[disnake.ui.Button(label=">", style=disnake.ButtonStyle.secondary, custom_id=str(h+1))]
+        return components
 
 async def status_resync():
     print("resyncing presence")
@@ -315,10 +344,7 @@ async def send_splashes_here(ctx):
     if ctx.author.id==ctx.guild.owner_id or rech2020:
         file=open('spamking channels.txt').read().split()
         if str(ctx.channel.id) in file:
-            with open("spamking channels.txt",'w') as spamkingchannels:
-                for the in file:
-                    if int(the)!=ctx.channel.id:
-                        spamkingchannels.write(f"{the}\n")
+            remove_line("spamking channels.txt", str(ctx.channel.id))
             await ctx.send(f"i removed **#{ctx.channel}** from spamking channels")
         else:
             # credits to tema5002 for temalib
@@ -353,19 +379,21 @@ async def channel_list(ctx, guild_id):
     channel_list = guild.channels
     message = f"{guild.name}'s channels\n"
     for channel in channel_list:
-        try: message += f"Channel name: {channel.name}\n"
-        except: message += f"Channel name: i failed to fetch\n"
-        try: message += f"Channel description: {channel.description}\n"
-        except: message += f"Channel description: none or i failed to fetch\n"
-        try: message += f"Channel type: {channel.type}\n"
-        except: message += "Channel type: failed to fetch\n"
-        try: message += f"Channel ID: {channel.id}\n"
-        except: message += "Channel ID: somehow failed to fetch???\n"
-        try: message += f"Channel category name: {channel.category.name}\n"
-        except: message += "Channel category name: None\n"
-        message += "\n"
+        while len(message) < 2000-6:
+            try: message += f"Channel name: {channel.name}\n"
+            except: message += f"Channel name: i failed to fetch\n"
+            try: message += f"Channel description: {channel.description}\n"
+            except: message += f"Channel description: none or i failed to fetch\n"
+            try: message += f"Channel type: {channel.type}\n"
+            except: message += "Channel type: failed to fetch\n"
+            try: message += f"Channel ID: {channel.id}\n"
+            except: message += "Channel ID: somehow failed to fetch???\n"
+            try: message += f"Channel category name: {channel.category.name}\n"
+            except: message += "Channel category name: None\n"
+            message += "\n"
     print(message)
-    await ctx.send('```' + message + '```', ephemeral=True)
+    try: await ctx.send('```' + message + '```', ephemeral=True)
+    except: await ctx.send('message got to long and it broke', ephemeral=True)
 
 @bot.command(name="emojis")
 async def emojis(ctx):
@@ -481,6 +509,75 @@ async def glibberish_listener(ctx: disnake.MessageInteraction):
         await ctx.send(f"here's your glibberish sentence: {gen_sentence()}")
     elif ctx.component.custom_id == "text":
         await ctx.send(f"here's a glibberish text:\n```\n{gen_text()}\n```")
+
+@bot.slash_command(name="save_file", description="i swear i didn't steal this command from ammeter (lying)")
+async def save_file(ctx, file: disnake.Attachment, filename: str):
+    await ctx.response.defer()
+    if not ctx.author.id in save_file_trusteds:
+        await ctx.send("you must be in trusted list to use this command",ephemeral=True)
+    elif file.size > 5*1024*1024:
+        await ctx.send(f"this file weights more than **5** MB! (~**{math.ceil(file.size/1024)}** KB)")
+    else:
+        now = datetime.datetime.now()
+        last_used = save_file_cooldowns.get(ctx.author.id)
+        if last_used is not None:
+            when_used = (now - last_used).total_seconds()
+            if when_used < 60:
+                await ctx.send(f"this command is on cooldown <:typing:1133071627370897580>\ntry again in {round(60 - when_used)} seconds", ephemeral=True)
+                return
+        save_file_cooldowns[ctx.author.id] = now
+        if "." in file.filename:
+            filepath = get_file_path(__file__, "shitpost", filename+file.filename[file.filename.rfind("."):])
+        else:
+            filepath = get_file_path(__file__, "shitpost", filename)
+        try:
+            await file.save(filepath)
+            await ctx.send(f"File saved successfully as '{filepath}'.")
+            channel=bot.get_channel(1197770600178003981)
+            await channel.send(f"**{ctx.author.name}** aka user with id `{ctx.author.id}` added file {filename}")
+        except Exception as e:
+            await ctx.send(f"An error occurred while saving the file: {e}")
+
+
+@bot.slash_command(name="list_files", description="lists all files saved with /save_file")
+async def list_files(ctx):
+    embed=makeembed(1, os.listdir("shitpost"))
+    await ctx.send(embed=embed, components=makecomponents(embed.title))
+
+@bot.slash_command(name="send_file", description="sends any file saved using with /save_file")
+async def send_file(ctx, filename: str):
+    await ctx.response.defer()
+    if not filename in os.listdir("shitpost"):
+        await ctx.send(f"file `{filename}` doesnt exist", ephemeral=True)
+    else:
+        now = datetime.datetime.now()
+        last_used = send_file_cooldowns.get(ctx.author.id)
+
+        if last_used is not None:
+            # time since last use
+            when_used = (now - last_used).total_seconds()
+
+            if when_used < 20:
+                await ctx.send(f"this command is on cooldown <:typing:1133071627370897580>\ntry again in {round(20 - when_used)} seconds", ephemeral=True)
+                return
+
+        send_file_cooldowns[ctx.author.id] = now
+        await ctx.send(filename, file=disnake.File(get_file_path(__file__, "shitpost", filename)))
+
+
+@bot.slash_command(name="sort", description="Sort file")
+async def send_file(ctx, file: disnake.Attachment):
+    await ctx.response.defer()
+    if file.size > 128*1024:
+        await ctx.send(f"this file weights more than **128** KB! (~**{math.ceil(file.size/1024)}** KB)")
+    elif file.filename[file.filename.rfind(".")+1:] != "txt":
+        h=file.filename[file.filename.rfind(".")+1:]
+        await ctx.send(f"this is not a txt file :skull: ({h})")
+    else:
+        await file.save(get_file_path(__file__, "temp", "input.txt"))
+        with open(get_file_path(__file__, "temp", "output.txt"),"w") as output:
+            for every in sorted(open(get_file_path(__file__,"temp", "input.txt")).readlines()): output.write(every)
+        await ctx.send(file.filename, file=disnake.File(get_file_path(__file__, "temp", "output.txt")))
 
 @bot.command(name="die")
 async def die(ctx):
