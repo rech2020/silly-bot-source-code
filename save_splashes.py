@@ -31,6 +31,7 @@ splashes = [
     "antiragraba 🍏🍏🍏🍏🍏🍏🍏🍏🍏🍏",
     "ампержопа ты тут?",
     "ампержопаааааааааааааааааа",
+    "битбокс баттл с аботмином",
     "currently {len(splashes)} splashes",
 ]
 splashes[splashes.index("currently {len(splashes)} splashes")]=f"currently {len(splashes)} splashes"
@@ -49,6 +50,7 @@ splashes_descriptions = [
     "a misspelled inside joke",
     "idk what to type here",
     "idk what to type here",
+    "the quote that you say to start a beatbox battle with abotmin",
     "just a splash counter",
 ]
 

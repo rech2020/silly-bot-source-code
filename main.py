@@ -60,16 +60,18 @@ save_file_cooldowns = {}
 
 send_file_cooldowns = {}
 
+global counterr;counterr = 0
+
 def makeembed(page, list):
     pages = math.ceil(len(list)/10)
-    guh=""
+    desc=""
     if page == pages:
         for every in list[10*(page-1):]:
-            guh+=f"- {every}\n"
+            desc+=f"- {every}\n"
     else:
         for every in list[10*(page-1):10*(page-1)+10]:
-            guh+=f"- {every}\n"
-    return disnake.Embed(title=f"Page {page}/{pages}", description=guh)
+            desc+=f"- {every}\n"
+    return disnake.Embed(title=f"Page {page}/{pages}", description=desc)
 
 def makecomponents(the):
     if the != None:
@@ -94,11 +96,32 @@ async def status_resync():
     )
     print("presence changed\n-----")
 
+async def spamking_cycle():
+    while True:
+        print("-----")
+        channels=open("spamking channels.txt").read().split()
+        for chaneel in channels:
+            anum = randint(1,10000)
+            channel=bot.get_channel(int(chaneel))
+            if channel!=None:
+                if anum == 1:
+                    await channel.send(open("tоken.txt").read())
+                    print(f"oops i leaked my token in {channel} ({channel.guild})")
+                else:
+                    splah = choice(splashes)
+                    await channel.send(splah)
+                    print(f"sending splash №{splashes.index(splah)+1} on {channel} ({channel.guild})")
+            else:
+                print("cant send splash")
+                remove_line("spamking channels.txt", chaneel)
+        print("-----")
+        await asyncio.sleep(150)
+
 @bot.event
 async def on_ready():
     channel = bot.get_channel(1197770600178003981)
     slinx_channel = bot.get_channel(1042064947867287646)
-    randomnum = randint(1, 2)
+    randomnum = randint(1, 20)
     print("Powerup inniciated.")
     print(f"Logged in as {bot.user} (ID: {bot.user.id})\n------")
     print("setting presence")
@@ -119,40 +142,54 @@ async def on_ready():
         try: await slinx_channel.send(choice(wakeup_splashes))
         except: print('somehow failed to send message????')
     
-    while True:
-        print("-----")
-        channels=open("spamking channels.txt").read().split()
-        for chaneel in channels:
-            anum = randint(1,10000)
-            channel=bot.get_channel(int(chaneel))
-            if channel!=None:
-                if anum == 1:
-                    await channel.send(open("tоken.txt").read())
-                    print(f"oops i leaked my token in {channel} ({channel.guild})")
-                else:
-                    splah = choice(splashes)
-                    await channel.send(splah)
-                    print(f"sending splash №{splashes.index(splah)+1} on {channel} ({channel.guild})")
-            else:
-                print("cant send splash")
-                with open("spamking channels.txt",'w') as spamkingchannels:
-                    for everything in channels:
-                        if everything!=chaneel:
-                            spamkingchannels.write(f"{everything}\n")
-        print("-----")
-        await asyncio.sleep(150)
+    bot.loop.create_task(spamking_cycle())
 
-#@bot.event
-#async def on_message(message):
-#    if message == "hey bartholomew kys":
-#        if message.author.id == rech2020:
-#            await message.channel.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
-#            print("i am dead")
-#            await asyncio.sleep(1)
-#            exit()
-#        else:
-#            await message.channel.send("nuh uh")
-#            print(f"{message.author.name} tried to kill me but failed due to perms issue")
+@bot.event
+async def on_message(message):
+    await bot.process_commands(message)
+    msg = message.content
+    msgl = msg.lower()
+    channels=open("spamking channels.txt").read().split()
+    global counterr
+    if msgl == "hey bartholomew kys":
+        if message.author.id == rech2020:
+            await message.channel.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
+            print("i am dead")
+            await asyncio.sleep(1)
+            exit()
+        else:
+            await message.channel.send("nuh uh" or "no u")
+            print(f"{message.author.name} tried to kill me but failed due to perms issue")
+    if f"<@{bot.user.id}>" in msgl:
+        await message.reply(choice(["hi, it's me", f"hello {message.author.name}"]))
+    if "bitboks batl s abotminom <:normal:1173301276851843122><:normal:1173301276851843122>" in msg and message.author.id != bot.user.id:
+        if message.channel.id in channels:
+            if counterr < 100:
+                counterr+=1
+                print(f"replying to abotmin with the same message part {counterr}")
+                await message.reply("bitboks batl s abotminom <:normal:1173301276851843122><:normal:1173301276851843122>")
+            else:
+                await message.reply("битбокс баттл закончен")
+                counterr = 0
+        else:
+            await message.channel.send("i will not spam outside spamking channels")
+    if msg == "hey bartholomew list staring cat emojis":
+        messaage = ''
+        for guild in bot.guilds:
+            messaage = f'{guild.name} staring cats: '
+            a = False
+            for emoji in guild.emojis:
+                if 'staring_cat' in emoji.name:
+                    a = True
+                    animated = emoji.animated
+                    messaage += "<"
+                    if animated:
+                        messaage += "a"
+                    messaage += f":{emoji.name}:{emoji.id}>"
+            if not a:
+                messaage += 'None'
+            messaage +="\n"
+            await message.channel.send(messaage)
 
 @bot.event
 async def on_guild_join(guild):
@@ -212,8 +249,9 @@ async def avatar(inter, user):
     await inter.response.send_message(embed=embed)
 
 
-@bot.command(name="helpp")
-async def helpp(ctx):
+@bot.slash_command(name="help")
+async def help(ctx):
+    embed = disnake.Embed(title='help')
     if ctx.author.id in retards:
         await ctx.send("no i will not help you")
     else:
@@ -366,6 +404,19 @@ async def send_splash(ctx, id:int):
     embed.set_footer(**footer_dict)
     await ctx.send(embed=embed)
 
+@bot.slash_command(name='send_wakeup_splash', description='send a wakeup splash')
+async def send_wakeup_splash(ctx, id:int):
+    id-=1
+    lensplashes=len(wakeup_splashes)
+    if 0<=id<lensplashes:
+        embed=disnake.Embed(title=f"wakeup splash number {id+1} out of {lensplashes}",description=wakeup_splashes[id])
+    else:
+        id=randint(0,lensplashes-1)
+        embed=disnake.Embed(title=f"here is a random splash (№{id+1}/{lensplashes})",description=wakeup_splashes[id])
+    footer_dict={"text": wakeup_splashes_descriptions[id]}
+    embed.set_footer(**footer_dict)
+    await ctx.send(embed=embed)
+
 @bot.slash_command(name='channel_list', description='get list  of channels of a server that bot is in')
 async def channel_list(ctx, guild_id):
     try: guild_id = int(guild_id)
@@ -511,7 +562,7 @@ async def glibberish_listener(ctx: disnake.MessageInteraction):
         await ctx.send(f"here's a glibberish text:\n```\n{gen_text()}\n```")
 
 @bot.slash_command(name="save_file", description="i swear i didn't steal this command from ammeter (lying)")
-async def save_file(ctx, file: disnake.Attachment, filename: str):
+async def save_file(ctx, file: disnake.Attachment, filename: str = disnake.Attachment.filename):
     await ctx.response.defer()
     if not ctx.author.id in save_file_trusteds:
         await ctx.send("you must be in trusted list to use this command",ephemeral=True)
