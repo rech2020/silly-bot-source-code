@@ -12,6 +12,7 @@ import pickle
 import temalib
 from temalib import *
 import datetime
+from datetime import datetime
 import math
 intents = disnake.Intents.all()
 
@@ -134,12 +135,14 @@ async def on_ready():
         activity=disnake.Game(f"with {people} people on {len(bot.guilds)} servers"),
     )
     print("presence changed\n-----")
-    try: await log_channel.send("i am awake")
-    except:
-        try: await channel.send(choice(wakeup_splashes))
-        except: print('somehow failed to send message?????')
+    try:
+        wakeup_splash = choice(wakeup_splashes)
+        await channel.send(eval(f'f"{wakeup_splash}"'))
+    except: print('somehow failed to send message?????')
     if randomnum == 1:
-        try: await slinx_channel.send(choice(wakeup_splashes))
+        try:
+            wakeup_splash = choice(wakeup_splashes)
+            await slinx_channel.send(eval(f'f"{wakeup_splash}"'))
         except: print('somehow failed to send message????')
     
     bot.loop.create_task(spamking_cycle())
@@ -160,8 +163,8 @@ async def on_message(message):
         else:
             await message.channel.send("nuh uh" or "no u")
             print(f"{message.author.name} tried to kill me but failed due to perms issue")
-    if f"<@{bot.user.id}>" in msgl:
-        await message.reply(choice(["hi, it's me", f"hello {message.author.name}"]))
+    if f"hello <@{bot.user.id}>" in msgl:
+        await message.reply(choice([f"hello {message.author.name}" ]))
     if "bitboks batl s abotminom <:normal:1173301276851843122><:normal:1173301276851843122>" in msg and message.author.id != bot.user.id:
         if message.channel.id in channels:
             if counterr < 100:
@@ -173,10 +176,12 @@ async def on_message(message):
                 counterr = 0
         else:
             await message.channel.send("i will not spam outside spamking channels")
+            await message.reply("битбокс баттл закончен")
+            counterr = 0
     if msg == "hey bartholomew list staring cat emojis":
         messaage = ''
         for guild in bot.guilds:
-            messaage = f'{guild.name} staring cats: '
+            messaage = f'{guild.name} stаring cаts: '
             a = False
             for emoji in guild.emojis:
                 if 'staring_cat' in emoji.name:
@@ -185,6 +190,13 @@ async def on_message(message):
                     messaage += "<"
                     if animated:
                         messaage += "a"
+                    messaage += f":{emoji.name}:{emoji.id}>"
+                if 'staring' in emoji.name and 'cat' in emoji.name:
+                    a = True
+                    animated = emoji.animated
+                    messaage += '<'
+                    if animated:
+                        messaage += 'a'
                     messaage += f":{emoji.name}:{emoji.id}>"
             if not a:
                 messaage += 'None'
@@ -629,6 +641,13 @@ async def send_file(ctx, file: disnake.Attachment):
         with open(get_file_path(__file__, "temp", "output.txt"),"w") as output:
             for every in sorted(open(get_file_path(__file__,"temp", "input.txt")).readlines()): output.write(every)
         await ctx.send(file.filename, file=disnake.File(get_file_path(__file__, "temp", "output.txt")))
+
+@bot.slash_command(name='кгыышфт_to_english_translator', description='translate russian gibberish to english')
+async def translator(ctx, text: str):
+    replaces=[('й','q'),('ц','w'),('у','e'),('к','r'),('е','t'),('н','y'),('г','u'),('ш','i'),('щ','o'),('з','p'),('х','['),('ъ',']'),('ф','a'),('ы','s'),('в','d'),('а','f'),('п','g'),('р','h'),('о','j'),('л','k'),('д','l'),('ж',';'),('э',"'"),('я','z'),('ч','x'),('с','c'),('м','v'),('и','b'),('т','n'),('ь','m'),('б',','),('ю','.'),('ё','`')]
+    for a, b in replaces:
+        text = text.replace(a,b)
+    await ctx.send(text)
 
 @bot.command(name="die")
 async def die(ctx):
