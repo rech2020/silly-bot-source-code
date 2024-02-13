@@ -19,10 +19,11 @@ wakeup_splashes_descriptions = [
 
 splashes = [
     "Hello, and again, welcome to the Aperture Science Enrichment Center. We are currently experiencing technical difficulties due to circumstances of potentially apocalyptic significance beyond our control. However, thanks to Emergency Testing Protocols, testing can continue. These pre-recorded messages will provide instructional and motivational support, so that science can still be done, even in the event of environmental, social, economic, or structural collapse.",
-    "hello i just wanted to tell you <@318571303881801728> can go kys i hate him",
+#    "hello i just wanted to tell you <@318571303881801728> can go kys i hate him", # i am removing these because people will try to cancel me or something
     "hello i just wanted to tell you <@691598832273850440> can go kys i hate him",
-    "hello i just wanted to tell you <@795404576839958529> can go kys i hate him",
-    "hello i just wanted to tell you <@735971349973172355> can go kys i hate him",
+#    "hello i just wanted to tell you <@795404576839958529> can go kys i hate him",
+#    "hello i just wanted to tell you <@735971349973172355> can go kys i hate him",
+#    "goober i remember you're bad cooking", # not adding this yet
     "Also try icosahedron!",
     "Also try ammeter!",
     "did i leak my token",
@@ -38,10 +39,11 @@ splashes[splashes.index("currently {len(splashes)} splashes")]=f"currently {len(
 
 splashes_descriptions = [
     "Portal 2",
+#    "quote of me",
     "quote of me",
-    "quote of me except i put goober's id",
-    "quote of me except i put tdm's id",
-    "quote of me except i put tintin's id",
+#    "quote of me except i put tdm's id",
+#    "quote of me except i put tintin's id",
+#    "yeah he can't cook",
     "Also try icosahedron!",
     "Also try ammeter!",
     "-ammeter",
@@ -53,6 +55,8 @@ splashes_descriptions = [
     "the quote that you say to start a beatbox battle with abotmin",
     "just a splash counter",
 ]
+
+# ban messages maybe comming soon?
 
 pickle.dump(wakeup_splashes, open("wakeup.dat", "wb"))
 pickle.dump(wakeup_splashes_descriptions, open("wakeup_descriptions.dat", "wb"))
