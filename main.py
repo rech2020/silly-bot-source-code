@@ -20,29 +20,34 @@ gib = Gibberish()
 
 bot = commands.Bot(command_prefix="ba!", reload=True, intents=intents)
 
+# bot ids
+ammeter = 811569586675515433
+
 # people ids
 hexahedron1 = 801078409076670494
 tema5002 = 558979299177136164
-ammeter = 811569586675515433
+breadcell = 979669953865216000
 rech2020 = 710621353128099901
 slinx92 = 903650492754845728
 kesslon = 1143072932596305932
 d = 1163914091270787125
 
 # bad people ids (mostly people from apg)
-goober = 691598832273850440
-tdm = 795404576839958529
-roll_cake = 318571303881801728
-tintin = 735971349973172355
+goober = 691598832273850440 # no i won't even comment this one
+tdm = 795404576839958529 # annoying person
+roll_cake = 318571303881801728 # i got banned because of him
+tintin = 735971349973172355 # ######### pfp
+drcarl = 722609239797006368
+unknown1 = 764502240919945266
 
 # specially bad people ids
-exobyte = 1043523548339241001
+exobyte = 1043523548339241001 # exobyte more like shitobyte
 
 # trusteds list
-trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d]
+trusteds = [hexahedron1, tema5002, slinx92, rech2020, kesslon, d, breadcell]
 
 # retards list
-retards = [goober, tdm, roll_cake, tintin, exobyte]
+retards = [goober, tdm, roll_cake, tintin, unknown1, exobyte]
 
 # servers
 barhtolomew_server = bot.get_guild(1195939785928364132)
@@ -154,15 +159,7 @@ async def on_message(message):
     msgl = msg.lower()
     channels=open("spamking channels.txt").read().split()
     global counterr
-    if msgl == "hey bartholomew kys":
-        if message.author.id == rech2020:
-            await message.channel.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
-            print("i am dead")
-            await asyncio.sleep(1)
-            exit()
-        else:
-            await message.channel.send("nuh uh" or "no u")
-            print(f"{message.author.name} tried to kill me but failed due to perms issue")
+    # replies below
     if f"hello <@{bot.user.id}>" in msgl:
         await message.reply(choice([f"hello {message.author.name}" ]))
     if "bitboks batl s abotminom <:normal:1173301276851843122><:normal:1173301276851843122>" in msg and message.author.id != bot.user.id:
@@ -178,6 +175,11 @@ async def on_message(message):
             await message.channel.send("i will not spam outside spamking channels")
             await message.reply("битбокс баттл закончен")
             counterr = 0
+    if msg == "yes i leaked your token 😃😃😃🫠🫠👼🖨️🕳️🔥🤗🤗😘😘":
+        await message.reply("fuck what do i do now")
+    if msg == "заткнись курица 🐔😂😂😂😔😔😔":
+        await message.reply("сам ты курица и сам ты заткнись")
+    # commands below
     if msg == "hey bartholomew list staring cat emojis":
         messaage = ''
         for guild in bot.guilds:
@@ -202,6 +204,15 @@ async def on_message(message):
                 messaage += 'None'
             messaage +="\n"
             await message.channel.send(messaage)
+    if msgl == "hey bartholomew kys":
+        if message.author.id == rech2020:
+            await message.channel.send(file=disnake.File("metal_pipe_falling_sound.mp3"))
+            print("i am dead")
+            await asyncio.sleep(1)
+            exit()
+        else:
+            await message.channel.send("nuh uh" or "no u")
+            print(f"{message.author.name} tried to kill me but failed due to perms issue")
 
 @bot.event
 async def on_guild_join(guild):
@@ -388,6 +399,40 @@ async def servers_list(ctx):
         except: await ctx.send('message got too long')
     else:
         await ctx.send('perms issue')
+
+@bot.command(name='fetch_invites')
+async def fetch_invites(ctx, guild_id):
+    if ctx.author.id not in trusteds:
+        ctx.send('you are not in trusteds <:typing:1195957954193653990>')
+        return
+    try: guild_id = int(guild_id)
+    except: await ctx.send('not an id <:typing:1195957954193653990>')
+    guild = bot.get_guild(guild_id)
+    if guild is None:
+        await ctx.send('guild not found.')
+        return
+
+    try:
+        invites = await guild.invites()
+        for invite in invites:
+            await ctx.send(f'Invite url: {invite.url}, uses: {invite.uses}, inviter: {invite.inviter.name}, expiration date: {invite.expires_at}')
+    except Exception as e:
+        await ctx.send(f'An error occurred: {e}')
+
+@bot.command()
+async def get_perms(ctx, guild_id):
+    if ctx.author.id not in trusteds:
+        ctx.send('you are not in trusteds <:typing:1195957954193653990>')
+        return
+    try: guild_id = int(guild_id)
+    except: await ctx.send('not an id <:typing:1195957954193653990>')
+    guild = bot.get_guild(guild_id)
+    member = guild.get_member(bot.user.id)
+    perms = choice(guild.text_channels).permissions_for(member)
+    message = 'Permissions:'
+    for perm in perms:
+        message += f'{perm}\n'
+    await ctx.send(message)
 
 @bot.slash_command(name='send_splashes_here', description='(OWNER ONLY) make bartholomew send splashes in here since start or reload')
 async def send_splashes_here(ctx):
@@ -643,11 +688,38 @@ async def send_file(ctx, file: disnake.Attachment):
         await ctx.send(file.filename, file=disnake.File(get_file_path(__file__, "temp", "output.txt")))
 
 @bot.slash_command(name='кгыышфт_to_english_translator', description='translate russian gibberish to english')
-async def translator(ctx, text: str):
+async def translator1(ctx, text: str):
     replaces=[('й','q'),('ц','w'),('у','e'),('к','r'),('е','t'),('н','y'),('г','u'),('ш','i'),('щ','o'),('з','p'),('х','['),('ъ',']'),('ф','a'),('ы','s'),('в','d'),('а','f'),('п','g'),('р','h'),('о','j'),('л','k'),('д','l'),('ж',';'),('э',"'"),('я','z'),('ч','x'),('с','c'),('м','v'),('и','b'),('т','n'),('ь','m'),('б',','),('ю','.'),('ё','`')]
+    replaces_upper=[(a.upper(),b.upper()) for (a,b) in replaces]
     for a, b in replaces:
         text = text.replace(a,b)
+    for a, b in replaces_upper:
+        text = text.replace(a,b)
     await ctx.send(text)
+
+@bot.slash_command(name='english_to_кгыышфт_translator', description='translate english to russian gibberish')
+async def translator2(ctx, text: str):
+    replaces=[('й','q'),('ц','w'),('у','e'),('к','r'),('е','t'),('н','y'),('г','u'),('ш','i'),('щ','o'),('з','p'),('х','['),('ъ',']'),('ф','a'),('ы','s'),('в','d'),('а','f'),('п','g'),('р','h'),('о','j'),('л','k'),('д','l'),('ж',';'),('э',"'"),('я','z'),('ч','x'),('с','c'),('м','v'),('и','b'),('т','n'),('ь','m'),('б',','),('ю','.'),('ё','`')]
+    replaces_upper=[(a.upper(),b.upper()) for (a,b) in replaces]
+    for a, b in replaces:
+        text = text.replace(b,a)
+    for a, b in replaces_upper:
+        text = text.replace(b,a)
+    await ctx.send(text)
+
+@bot.slash_command(name='kick', description='kick people')
+async def kick(ctx, member: disnake.Member, *, reason='skill issue'):
+    if ctx.author.id != rech2020:
+        await ctx.send("perms issue", ephemeral=True)
+        return
+    permissions = ctx.guild.me.guild_permissions
+    if permissions.kick_members:
+        await member.send(f"hey loser you got kicked from {ctx.guild.name} for `{reason}`")
+        await member.kick(reason=reason)
+        await ctx.send(f"kicked member {member.name} from {ctx.guild.name} for {reason}",ephemeral=True)
+        await log_channel.send(f"kicked member {member.name} from {ctx.guild.name} for {reason}",ephemeral=True)
+    else:
+        await ctx.send("i don't have permissions", ephemeral=True)
 
 @bot.command(name="die")
 async def die(ctx):
